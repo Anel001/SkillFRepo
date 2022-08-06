@@ -1,0 +1,98 @@
+{% extends 'flatpages/default.html' %}
+
+<!-- Название у нас будет products -->
+{% block title %}
+Notice board
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+<h1>Все комментарии</h1>
+<hr>
+<form method="GET">
+    {{ filter.form }}
+    <input type="submit" value="Найти">
+</form>
+{% if comments %}
+       <table> <!-- Начинаем описывать таблицу -->
+           <tr>
+               <th>От</th>
+               <th>Дата</th>
+               <th>Описание</th>
+               <th>Объявление</th>
+               <th>Статус</th>
+           </tr>
+           {% for comment in filter.qs %}
+               {% if comment.notice.Author.authUser.id == current_user %}
+                   <tr>
+                       <td>{{ comment.User.username }}</td>
+                       <td>{{ comment.com_date|date:'d.m.Y' }}</td>
+                       <td>
+                           {{ comment.com_text }}
+                           <br><a href="{% url 'com_delete.html' comment.id %}"><u> Удалить </u></a>
+                       </td>
+                       <td>
+                           <br><a href="{% url 'ad.html' comment.notice.id %}">{{ comment.notice.title }}</a>
+                       </td>
+                       <td>
+                           {% if not comment.status %}
+                           <a class="update_status" data-url="{% url 'update_comment' comment.id 'public'%}" href="#">Принять</a> /
+                           <a class="update_status" data-url="{% url 'update_comment' comment.id 'delete'%}" href="#">Отклонить</a>
+                           {% else %}
+                               Принято
+                           {% endif %}
+                       </td>
+                   </tr>
+               {% endif %}
+           {% endfor %}
+       </table>
+
+       {% if is_paginated %}
+            {% if page_obj.has_previous %}
+                <a href="?page=1">First</a>
+                <a href="?page={{ page_obj.previous_page_number }}"><<<</a>
+            {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <a>{{ num }}</a>
+                {% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">>>></a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% endif %}
+       {% endif %}
+{% else %}
+    <h2>Комментариев нет!</h2>
+{% endif %}
+
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    $('body').on('click', '.update_status', function(event){
+    event.preventDefault();
+    if (confirm('Вы уверены?')) {
+        var url = $(this).attr('data-url')
+        var tag_li = $(this).parent()
+        console.log(url)
+
+        $.ajax({
+            url:url,
+            type: 'GET',
+            data: {
+                'bar_graph_dropdown': this.value
+            },
+            success: function(response) {
+                tag_li.html(response)
+                console.log(response)
+            }
+        })
+
+    }
+
+    })
+</script>
+{% endblock %}
+{% endblock content %}

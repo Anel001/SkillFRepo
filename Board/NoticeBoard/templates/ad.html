@@ -1,0 +1,61 @@
+{% extends 'flatpages/default.html' %}
+
+<!-- Название у нас будет products -->
+{% block title %}
+Notice
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+<h1>Объявление</h1>
+<hr>
+{%if messages %}
+    <div class="alert.alert-success">
+        {% for m in messages %}
+            {{m}}
+        {% endfor %}
+    </div>
+{% endif %}
+<table> <!-- Начинаем описывать таблицу -->
+    <tr>
+        <th>Автор</th>
+        <th>Заголовок</th>
+        <th>Описание</th>
+        <th>Дата создания</th>
+        <th>Категория</th>
+    </tr>
+    <tr>
+        <td>{{ ad.Author.authUser }}</td>
+        <td>{{ ad.title }}</td>
+        <td>{{ ad.content|safe }}</td>
+        <td>{{ ad.date_create|date:'M d Y' }}</td>
+        <td>{{ ad.category.category_name }}</td>
+    </tr>
+</table>
+<br>
+{% if is_subscribed %}
+    <button> <a href="{% url 'unsubscribe' ad.category.id %}"><u> Отписаться от категории</u></a> </button>
+{% else %}
+    <button> <a href="{% url 'subscribe' ad.category.id %}"><u> Подписаться на категорию</u></a> </button>
+{% endif %}
+
+<br><hr>
+<h3>Комментарии({{truecount}})</h3>
+<p>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Добавить комментарий">
+    </form>
+</p>
+
+{% for comment in ad.comments.all %}
+    {% if comment.status %}
+        {{ comment.User }}<br>
+        {{comment.com_date}}<br>
+        {{ comment.com_text }} <br><br>
+    {% endif %}
+{% empty %}
+    <p>There are no comments yet.</p>
+{% endfor %}
+{% endblock content %}

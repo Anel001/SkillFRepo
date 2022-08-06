@@ -1,0 +1,33 @@
+{% extends 'flatpages/default.html' %}
+
+<!-- Название у нас будет products -->
+{% block title %}
+Comment
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+<h1>Действительно удалить комментарий?</h1>
+<hr>
+<table> <!-- Начинаем описывать таблицу -->
+           <tr>
+               <th>От</th>
+               <th>Дата</th>
+               <th>Описание</th>
+               <th>Объявление</th>
+           </tr>
+           <tr>
+               <td>{{ comment.User.username }}</td>
+               <td>{{ comment.com_date }}</td>
+               <td>{{ comment.com_text }}</td>
+               <td>
+                   <br><a href="{% url 'ad.html' comment.notice.id %}">{{ comment.notice.title }}</a>
+               </td>
+           </tr>
+       </table>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить">
+</form>
+{% endblock content %}

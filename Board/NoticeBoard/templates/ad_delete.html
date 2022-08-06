@@ -1,0 +1,33 @@
+{% extends 'flatpages/default.html' %}
+
+<!-- Название у нас будет products -->
+{% block title %}
+Notice
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+<h1>Действительно удалить объявление?</h1>
+<hr>
+<table> <!-- Начинаем описывать таблицу -->
+    <tr>
+        <th>Автор</th>
+        <th>Заголовок</th>
+        <th>Описание</th>
+        <th>Дата создания</th>
+        <th>Категория</th>
+    </tr>
+    <tr>
+        <td>{{ ad.Author.authUser }}</td>
+        <td>{{ ad.title }}</td>
+        <td>{{ ad.content|safe }}</td>
+        <td>{{ ad.date_create|date:'M d Y' }}</td>
+        <td>{{ ad.category.category_name }}</td>
+    </tr>
+</table>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить">
+</form>
+{% endblock content %}
