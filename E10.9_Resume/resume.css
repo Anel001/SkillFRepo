@@ -1,0 +1,84 @@
+@font-face {
+    src: url(href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;1,700&display=swap");
+    font-family: "Merriweather";
+}
+
+body {
+  font-family: "Roboto", "Arial", sans-serif;
+}
+
+.about-title{
+  font-family: "Merriweather", "Arial", serif;
+  font-size: 15pt;
+}
+
+.header-wrapper{
+  max-width:80%;
+  margin: auto;
+  display:grid;
+  grid-template-columns:1fr 2fr;
+  justify-items: center; 
+}
+
+.round{
+  border-radius: 50px; /* Радиус скругления */
+  border: 3px solid #79b6f7; /* Параметры рамки */
+  box-shadow: 0 0 7px #666; /* Параметры тени */
+}
+
+.content-container{
+  max-width:80%;
+  margin: auto;
+  display:grid;
+  grid-template-columns:1fr 2fr;
+}
+
+.content-block1{
+  border-radius: 50px;
+  background: #e3e3e3;
+}
+
+.my-block{
+  width:80%;
+  margin: auto;  
+  display:grid;
+}
+
+
+.semantic-block{
+  width:550px;
+  margin: auto;  
+  display:grid;
+  grid-template-columns:repeat(1, minmax(250px,1fr));
+}
+
+.block-title{
+  font-family: "Merriweather", "Arial", serif;
+  font-size: 15pt;
+  border-bottom-width: 2px; 
+  border-bottom-style: solid;
+  border-bottom-color: #79b6f7;
+}
+
+.block-container{
+  display:grid;
+  grid-template-columns:30% 70%;
+}
+
+.skillbar {
+  width: 100%;
+
+  background-color: #ddd;
+}
+
+.skills {
+  text-align: right;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: white;
+}
+
+.html {width: 90%; background-color: #04AA6D;}
+.css {width: 80%; background-color: #2196F3;}
+.js {width: 65%; background-color: #f44336;}
+.python {width: 95%; background-color: #808080;}
